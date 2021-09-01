@@ -18,6 +18,7 @@ services:
       XML: /examples/ddi-3.1/example-1.xml
 ```
 
+Note: In case of compile error, set EOL as LF in `run.sh`.
 
 GNU Lesser General Public License
 =========================
