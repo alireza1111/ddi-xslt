@@ -24,25 +24,24 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
     xmlns:dc="http://purl.org/dc/elements/1.1/"
     xmlns:dcterms="http://purl.org/dc/terms/"   
 
-    xmlns:dc2="ddi:dcelements:3_2" 
-    xmlns:g="ddi:group:3_2" 
-    xmlns:d="ddi:datacollection:3_2"                 
-    xmlns:c="ddi:conceptualcomponent:3_2"                 
-    xmlns:a="ddi:archive:3_2"
+    xmlns:g="ddi:group:3_2"  
+    xmlns:d="ddi:datacollection:3_2"                
+    xmlns:c="ddi:conceptualcomponent:3_2"                
+    xmlns:a="ddi:archive:3_2" 
     xmlns:m1="ddi:physicaldataproduct/ncube/normal:3_2" 				
     xmlns:m2="ddi:physicaldataproduct/ncube/tabular:3_2" 
     xmlns:m3="ddi:physicaldataproduct/ncube/inline:3_2" 
     xmlns:ddi="ddi:instance:3_2"
-    xmlns:l="ddi:logicalproduct:3_2" 				
-    xmlns:pd="ddi:physicaldataproduct:3_2"
-    xmlns:p="ddi:physicaldataproduct:3_2"
+    xmlns:l="ddi:logicalproduct:3_2" 			
+
+    xmlns:p="ddi:physicaldataproduct:3_2" 
     xmlns:cm="ddi:comparative:3_2" 
     xmlns:s="ddi:studyunit:3_2" 
     xmlns:r="ddi:reusable:3_2" 
     xmlns:pi="ddi:physicalinstance:3_2" 
     xmlns:ds="ddi:dataset:3_2" 
-    xmlns:pr="ddi:profile:3_2"
-    xsi:schemaLocation="ddi:instance:3_2 http://www.ddialliance.org/sites/default/files/schema/ddi3.2/instance.xsd"
+    xmlns:pr="ddi:profile:3_2" 
+    xsi:schemaLocation="ddi:instance:3_2 https://ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/instance.xsd"
     
     exclude-result-prefixes="#all"
     version="2.0">
@@ -57,8 +56,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
             <xsl:namespace name="dc" select="'http://purl.org/dc/elements/1.1/'"/>
             <xsl:namespace name="dcterms" select="'http://purl.org/dc/terms/'"/>
             
-            <xsl:apply-templates select="s:StudyUnit/r:Citation" />
-            <xsl:apply-templates select="s:StudyUnit/s:Abstract" />
+            <xsl:apply-templates select="r:Citation" />
+            <xsl:apply-templates select="g:Group/g:SubGroup/s:StudyUnit/r:Abstract" />
             
             <xsl:for-each select="//PhysicalDataProduct/p:PhysicalStructureScheme/p:PhysicalStructure/p:Format">
                 <dcterms:format>
@@ -72,7 +71,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
     </xsl:template>
 
     <xsl:template match="r:Citation">
-        <xsl:for-each select="r:Title">
+        <xsl:for-each select="r:Title/r:String">
             <dc:title>
                 <xsl:if test="@xml:lang"><xsl:attribute name="xml:lang" select="@xml:lang"/></xsl:if>
                 <xsl:value-of select="." />
@@ -86,7 +85,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
             </dcterms:alternative>
         </xsl:for-each>
 
-        <xsl:for-each select="r:Creator">
+        <xsl:for-each select="r:Creator/r:String">
             <dcterms:creator>
                 <xsl:if test="@xml:lang"><xsl:attribute name="xml:lang" select="@xml:lang"/></xsl:if>
                 <xsl:value-of select="." />
@@ -100,7 +99,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
             </dcterms:contributor>
         </xsl:for-each>
 
-        <xsl:for-each select="r:Publisher">
+        <xsl:for-each select="r:Publisher/r:PublisherName/r:String">
             <dc:publisher>
                 <xsl:if test="@xml:lang"><xsl:attribute name="xml:lang" select="@xml:lang"/></xsl:if>
                 <xsl:value-of select="." />
@@ -128,7 +127,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
         </xsl:if>       
     </xsl:template>
 
-    <xsl:template match="s:Abstract">
+    <xsl:template match="r:Abstract">
         <dcterms:abstract>
             <xsl:if test="r:Content/@xml:lang">
                 <xsl:attribute name="xml:lang" select="r:Content/@xml:lang"/>
