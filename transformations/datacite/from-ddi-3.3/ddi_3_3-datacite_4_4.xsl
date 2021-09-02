@@ -4,7 +4,6 @@
                 xmlns:dc="http://purl.org/dc/elements/1.1/"
                 xmlns:g="ddi:group:3_3"
                 xmlns:d="ddi:datacollection:3_3"
-                <!-- xmlns:dce="ddi:dcelements:3_1" -->
                 xmlns:c="ddi:conceptualcomponent:3_3"
                 xmlns:xhtml="http://www.w3.org/1999/xhtml"
                 xmlns:a="ddi:archive:3_3"
@@ -24,7 +23,7 @@
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://schema.datacite.org/meta/kernel-4.4 https://schema.datacite.org/meta/kernel-4.4/metadata.xsd"
                 version="2.0"
-                exclude-result-prefixes="dc g d dce c xhtml a m1 ddi m2 l m3 pd cm s r pi ds pr xsl">
+                exclude-result-prefixes="dc g d c xhtml a m1 ddi m2 l m3 pd cm s r pi ds pr xsl">
     <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
 
     <!--
@@ -86,8 +85,8 @@
         <xsl:apply-templates select="s:StudyUnit"/>
     </xsl:template>
     
-    <xsl:template match="//s:StudyUnit">
-        <resource xmlns="https://schema.datacite.org/meta/kernel-4.4/metadata.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://datacite.org/schema/kernel-2.2 https://schema.datacite.org/meta/kernel-4.4/metadata.xsd">
+    <xsl:template match="/">
+        <resource xmlns="https://schema.datacite.org/meta/kernel-4.4/metadata.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://schema.datacite.org/meta/kernel-4.4/metadata.xsd">
             
             <!-- 1 identifier -->
             <identifier identifierType="DOI">
@@ -143,36 +142,36 @@
             <!-- 3 titles -->
             <titles>
                 <xsl:choose>
-                    <xsl:when test="r:Citation/r:Title[@xml:lang = $lang]">
-                        <title><xsl:value-of select="r:Citation/r:Title[@xml:lang = $lang]"/></title>
+                    <xsl:when test="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Title/r:String">
+                        <title><xsl:value-of select="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Title/r:String"/></title>
                     </xsl:when>
                     <xsl:otherwise>
-                        <title><xsl:value-of select="r:Citation/r:Title"/></title>
+                        <title><xsl:value-of select="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Title/r:String"/></title>
                     </xsl:otherwise>
                 </xsl:choose>
-                <xsl:if test="r:Citation/r:AlternateTitle">
+                <xsl:if test="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Citation/r:AlternateTitle">
                     <xsl:choose>
-                        <xsl:when test="r:Citation/r:AlternateTitle[@xml:lang = $lang]">
-                            <title titleType="AlternativeTitle"><xsl:value-of select="r:Citation/r:AlternateTitle[@xml:lang = $lang]"/></title>
+                        <xsl:when test="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Citation/r:AlternateTitle[@xml:lang = $lang]">
+                            <title titleType="AlternativeTitle"><xsl:value-of select="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Citation/r:AlternateTitle[@xml:lang = $lang]"/></title>
                         </xsl:when>
                         <xsl:otherwise>
-                            <title titleType="AlternativeTitle"><xsl:value-of select="r:Citation/r:AlternateTitle"/></title>
+                            <title titleType="AlternativeTitle"><xsl:value-of select="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Citation/r:AlternateTitle"/></title>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:if>
-                <xsl:if test="r:Citation/r:SubTitle">
+                <xsl:if test="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Citation/r:SubTitle">
                     <xsl:choose>
-                        <xsl:when test="r:Citation/r:SubTitle[@xml:lang = $lang]">
-                            <title titleType="Subtitle"><xsl:value-of select="r:Citation/r:SubTitle[@xml:lang = $lang]"/></title>
+                        <xsl:when test="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Citation/r:SubTitle[@xml:lang = $lang]">
+                            <title titleType="Subtitle"><xsl:value-of select="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Citation/r:SubTitle[@xml:lang = $lang]"/></title>
                         </xsl:when>
                         <xsl:otherwise>
-                            <title titleType="Subtitle"><xsl:value-of select="r:Citation/r:SubTitle"/></title>
+                            <title titleType="Subtitle"><xsl:value-of select="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Citation/r:SubTitle"/></title>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:if>     
-                <xsl:for-each select="r:Citation/r:Title[@translated='true']">
+                <!-- <xsl:for-each select="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Citation/r:Title[@translated='true']">
                     <title titleType="TranslatedTitle"><xsl:value-of select="."/></title>
-                </xsl:for-each>
+                </xsl:for-each> -->
             </titles>
             
             <!-- 4 publisher -->
