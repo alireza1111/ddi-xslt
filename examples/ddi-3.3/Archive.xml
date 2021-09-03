@@ -19,7 +19,7 @@
         </r:Citation>
         <a:ItemQuantity>2</a:ItemQuantity>
         <a:AvailabilityStatus><r:Content>On-Line</r:Content></a:AvailabilityStatus>
-        <a:DataFileQuantity>4</a:DataFileQuantity>
+        <a:DataFileQuantity>4</a:DataFileQuantity> 
         <a:CollectionCompleteness><r:Content>Original data dictionary, DDI documentation, US level data file, State level data file, and County level data file.</r:Content></a:CollectionCompleteness>
         <a:Item>
           <r:Citation>

@@ -81,11 +81,11 @@
     -->
     <xsl:param name="formats">application/x-ddi-l+xml</xsl:param>
     
-    <xsl:template match="*">
+    <xsl:template match="/ddi:DDIInstance">
         <xsl:apply-templates select="s:StudyUnit"/>
     </xsl:template>
     
-    <xsl:template match="/">
+    <xsl:template match="/ddi:DDIInstance">
         <resource xmlns="https://schema.datacite.org/meta/kernel-4.4/metadata.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://schema.datacite.org/meta/kernel-4.4/metadata.xsd">
             
             <!-- 1 identifier -->
@@ -141,37 +141,38 @@
             
             <!-- 3 titles -->
             <titles>
-                <xsl:choose>
-                    <xsl:when test="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Title/r:String">
-                        <title><xsl:value-of select="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Title/r:String"/></title>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <title><xsl:value-of select="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Title/r:String"/></title>
-                    </xsl:otherwise>
-                </xsl:choose>
-                <xsl:if test="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Citation/r:AlternateTitle">
-                    <xsl:choose>
-                        <xsl:when test="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Citation/r:AlternateTitle[@xml:lang = $lang]">
-                            <title titleType="AlternativeTitle"><xsl:value-of select="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Citation/r:AlternateTitle[@xml:lang = $lang]"/></title>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <title titleType="AlternativeTitle"><xsl:value-of select="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Citation/r:AlternateTitle"/></title>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:if>
-                <xsl:if test="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Citation/r:SubTitle">
-                    <xsl:choose>
-                        <xsl:when test="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Citation/r:SubTitle[@xml:lang = $lang]">
-                            <title titleType="Subtitle"><xsl:value-of select="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Citation/r:SubTitle[@xml:lang = $lang]"/></title>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <title titleType="Subtitle"><xsl:value-of select="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Citation/r:SubTitle"/></title>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:if>     
-                <!-- <xsl:for-each select="a:Archive/a:ArchiveSpecific/a:Collection/r:Citation/r:Citation/r:Title[@translated='true']">
-                    <title titleType="TranslatedTitle"><xsl:value-of select="."/></title>
-                </xsl:for-each> -->
+                <xsl:for-each select="r:Citation/r:Title">
+                    <xsl:if test="@translated='false'">
+                       <title>                            
+                           <xsl:if test="@xml:lang">
+                               <xsl:attribute name="xml:lang"><xsl:value-of select="@xml:lang"/></xsl:attribute>
+                           </xsl:if>
+                           <xsl:value-of select="."/>
+                       </title>
+                    </xsl:if>
+                </xsl:for-each>
+                <xsl:for-each select="r:Citation/r:AlternateTitle">
+                    <title titleType="AlternativeTitle">                            
+                        <xsl:if test="@xml:lang">
+                            <xsl:attribute name="xml:lang"><xsl:value-of select="@xml:lang"/></xsl:attribute>
+                        </xsl:if>
+                        <xsl:value-of select="."/>
+                    </title>
+                </xsl:for-each>
+                <xsl:for-each select="r:Citation/r:SubTitle">
+                    <title titleType="Subtitle">                            
+                        <xsl:if test="@xml:lang">
+                            <xsl:attribute name="xml:lang"><xsl:value-of select="@xml:lang"/></xsl:attribute>
+                        </xsl:if>
+                        <xsl:value-of select="."/>
+                    </title>
+                </xsl:for-each>
+                <xsl:for-each select="r:Citation/r:Title[@translated='true']">
+                    <title titleType="TranslatedTitle">                        
+                        <xsl:attribute name="xml:lang"><xsl:value-of select="@xml:lang"/></xsl:attribute>
+                        <xsl:value-of select="."/>
+                    </title>
+                </xsl:for-each>
             </titles>
             
             <!-- 4 publisher -->
